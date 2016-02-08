@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class arcadeDriveCmd implements cmd {
+public class ArcadeDriveCmd implements cmd {
 
 	public String type = "arcadeDriveCmd";
 	public ArrayList<cmd> list;
@@ -19,22 +19,22 @@ public class arcadeDriveCmd implements cmd {
 	/*
 	 * Main controller for use.  Based on 4 motors anda  speed controller.
 	 */
-	public arcadeDriveCmd(int leftMotorChannel, int rightMotorChannel, JsScaled driveStick) {
+	public ArcadeDriveCmd(int leftMotorChannel, int rightMotorChannel, JsScaled driveStick) {
 		RobotDrive rd = new RobotDrive(leftMotorChannel, rightMotorChannel);
 		this.driveStick = driveStick;
 	}
 		
 	// Included for completeness, but unused
-	public arcadeDriveCmd(SpeedController leftMotor, SpeedController rightMotor, JsScaled driveStick) {
+	public ArcadeDriveCmd(SpeedController leftMotor, SpeedController rightMotor, JsScaled driveStick) {
 		RobotDrive rd = new RobotDrive(leftMotor, rightMotor);
 		this.driveStick = driveStick;
 	}
-	public arcadeDriveCmd(int frontLeftMotor, int rearLeftMotor, int frontRightMotor, int rearRightMotor, JsScaled driveStick) {
+	public ArcadeDriveCmd(int frontLeftMotor, int rearLeftMotor, int frontRightMotor, int rearRightMotor, JsScaled driveStick) {
 		RobotDrive rd = new RobotDrive(frontLeftMotor, rearLeftMotor, frontRightMotor, rearRightMotor);
 		this.driveStick = driveStick;
 	}
 	
-	public arcadeDriveCmd(SpeedController frontLeftMotor, SpeedController rearLeftMotor, SpeedController frontRightMotor, SpeedController rearRightMotor, JsScaled driveStick) {
+	public ArcadeDriveCmd(SpeedController frontLeftMotor, SpeedController rearLeftMotor, SpeedController frontRightMotor, SpeedController rearRightMotor, JsScaled driveStick) {
 		RobotDrive rd = new RobotDrive(frontLeftMotor, rearLeftMotor, frontRightMotor, rearRightMotor);
 		this.driveStick = driveStick;
 	}

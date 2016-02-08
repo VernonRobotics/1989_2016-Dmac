@@ -26,7 +26,7 @@ public class Robot extends IterativeRobot {
 	
     JsScaled utilityStick = new JsScaled(0);
     JsScaled driveStick = new JsScaled(1);
-    arcadeDriveCmd aDrive = new arcadeDriveCmd(0, 1, driveStick);
+    ArcadeDriveCmd aDrive = new ArcadeDriveCmd(0, 1, driveStick);
     ArrayList<cmd> cmdlist = new ArrayList<cmd>();
     
     
