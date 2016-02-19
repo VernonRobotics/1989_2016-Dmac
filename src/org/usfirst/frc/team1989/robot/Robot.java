@@ -38,7 +38,12 @@ public class Robot extends IterativeRobot {
 	Timer t1 = new Timer();
 	Servo s1 = new Servo(0);
 
-	// JsScaled utilityStick = new JsScaled(1);
+	// For the test method
+	double i = 0;
+	Timer t2 = new Timer();
+	int c = 0;  // A placeholder for when t2 is 0, not 5.
+    TestMethods tm = new TestMethods();	
+	// JsScaled utilityStick = new JsScaled(1);  // Second Joystick?
 	JsScaled driveStick = new JsScaled(0);
 	ArcadeDriveCmd aDrive = new ArcadeDriveCmd(frontleftmotor, frontrightmotor, driveStick);
 	ArrayList<cmd> cmdlist = new ArrayList<cmd>();
@@ -101,7 +106,7 @@ public class Robot extends IterativeRobot {
 	 * 
 	 */
 	public void testPeriodic() {
-		drive.arcadeDrive(0 - driveStick.sgetY(), 0 - driveStick.sgetTwist());
+//		drive.arcadeDrive(0 - driveStick.sgetY(), 0 - driveStick.sgetTwist());
 
 		// Show that the buttons work - uses servo - intended for use with the
 		// dog leg
@@ -111,7 +116,7 @@ public class Robot extends IterativeRobot {
 			s1.set(1);
 		}
 
-		
+		// Output the Voltages, Currents, and Speeds of the motors.
 		if (t1.get() > .5) {
 			t1.reset();
 			t1.start();
@@ -124,7 +129,22 @@ public class Robot extends IterativeRobot {
 			SmartDashboard.putString("DB/String 3", " Left S " + frontleftmotor.getSpeed());
 			SmartDashboard.putString("DB/String 8", "right S " + frontrightmotor.getSpeed());
 		}
+		
+		if(driveStick.getRawButton(14)){
+			t2.start();
+			tm.setMotors(i * .1); // sets the four motors to one tenth of the value of i (.1 for 1, .2 for 2, 1 for 10)
+		}
 
+		if(t2.hasPeriodPassed(5)){
+			t2.stop();
+			t2.reset();
+			tm.setMotors(0);
+			if(i < 70){
+				i++;
+			}
+	
+		}
+	
 	}
 
 }
