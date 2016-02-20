@@ -15,8 +15,6 @@ public class ArcadeDriveCmd implements cmd {
 	JsScaled driveStick;
 	RobotDrive rd;
 
-	
-	
 	/*
 	 * Main controller for use.  Based on 4 motors anda  speed controller.
 	 */
@@ -43,7 +41,6 @@ public class ArcadeDriveCmd implements cmd {
 	
 	@Override
 	public void disabledInit() {
-		// TODO Auto-generated method stub
 		rd.arcadeDrive(0, 0);
 
 	}
@@ -57,14 +54,11 @@ public class ArcadeDriveCmd implements cmd {
 	@Override
 	public void autonomousPeriodic() {
 		rd.arcadeDrive(driveStick.pY, driveStick.pTwist);
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void DisabledPeriodic() {
-		rd.arcadeDrive(0, 0);
-		// TODO Auto-generated method stub
 		rd.arcadeDrive(0, 0);
 
 	}
@@ -84,7 +78,6 @@ public class ArcadeDriveCmd implements cmd {
 
 	@Override
 	public void teleopPeriodic() {
-		// TODO Auto-generated method stub
 		rd.arcadeDrive(0 - driveStick.sgetY(), 0-driveStick.sgetTwist());
 	}
 

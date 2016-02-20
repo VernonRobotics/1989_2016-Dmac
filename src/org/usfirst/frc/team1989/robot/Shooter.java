@@ -12,9 +12,6 @@ public class Shooter implements cmd {
 	int TalonID1;
 	int TalonID2;
 	
-	 
-	
-	
 	public Shooter(CANTalon shootMotor1,CANTalon shootMotor2,JsScaled driveStick){
 		this.shootMotor1 = shootMotor1;
 		this.shootMotor2 = shootMotor2;
@@ -24,9 +21,6 @@ public class Shooter implements cmd {
 
 
 	@Override
-	
-	
-	
 	public void disabledInit() {
 		// TODO Auto-generated method stub
 		
@@ -46,10 +40,9 @@ public class Shooter implements cmd {
 
 	@Override
 	public void DisabledPeriodic() {
-		// TODO Auto-generated method stub
 			shootMotor1.set(0);
 			shootMotor2.set(0);
-		
+			
 	}
 
 	@Override
@@ -66,20 +59,16 @@ public class Shooter implements cmd {
 
 	@Override
 	public void teleopPeriodic() {
-		// TODO Auto-generated method stub
 		// if neither 3 or 1 is pressed we turn off - this is for test only
 		// we need a logic to turn it off too or it shuts off after a while
 		//so the shooter needs a timer and a state and some logic depending on state
-		if(driveStick.getRawButton(3) == true){
+		if(driveStick.getRawButton(3)){
 			shootMotor1.set(0.2);
 			shootMotor2.set(-0.2);
-		}
-		else if (driveStick.getRawButton(1)){
+		} else if (driveStick.getRawButton(1)) {
 			shootMotor1.set(-0.7);
 			shootMotor2.set(0.7);
-		}
-		else
-		{
+		} else {
 			shootMotor1.set(0);
 			shootMotor2.set(0);
 			

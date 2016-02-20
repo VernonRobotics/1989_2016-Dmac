@@ -12,56 +12,57 @@ import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-/**
- * The VM is configured to automatically run this class, and to call the
- * 
- * functions corresponding to each mode, as described in the IterativeRobot
- * documentation. If you change the name of this class or the package after
- * creating this project, you must also update the manifest file in the resource
- * directory.
- */
 public class Robot extends IterativeRobot {
-
-	/**
-	 * This function is run when the robot is first started up and should be
-	 * used for any initialization code.
-	 */
-
+	// This code is run when the robot is first initialized
+	
+	// This is the ramp for the drive motors
 	double driveramp = 6.0;
 
+	// These are the motor objects and the timer
 	CANTalon frontleftmotor = new CANTalon(3);
 	CANTalon frontrightmotor = new CANTalon(9);
-	CANTalon backleftmotor = new CANTalon(2);
-	CANTalon backrightmotor = new CANTalon(3);
-	CANTalon shootmotor1 = new CANTalon(2);
-	CANTalon shootmotor2 = new CANTalon(8);
+	CANTalon backleftmotor = new CANTalon(6);
+	CANTalon backrightmotor = new CANTalon(7);
+	CANTalon shootmotorLeft = new CANTalon(4);
+	CANTalon shootmotorRight = new CANTalon(8);
+	CANTalon elevator = new CANTalon(5);
 	Timer t1 = new Timer();
 	Servo s1 = new Servo(0);
 
 	// For the test method
 	double i = 0;
 	Timer t2 = new Timer();
-	int c = 0;  // A placeholder for when t2 is 0, not 5.
-    TestMethods tm = new TestMethods();	
-	// JsScaled utilityStick = new JsScaled(1);  // Second Joystick?
+	
+	//For the cCheck Method
+	Timer t3 = new Timer();
+	double smv1;
+	double smv2;
+	
+    // JsScaled utilityStick = new JsScaled(1);  // Second Joystick?
 	JsScaled driveStick = new JsScaled(0);
 	ArcadeDriveCmd aDrive = new ArcadeDriveCmd(frontleftmotor, frontrightmotor, driveStick);
 	ArrayList<cmd> cmdlist = new ArrayList<cmd>();
 	Joystick js = new Joystick(0);
 
 	RobotDrive drive = new RobotDrive(frontleftmotor, frontrightmotor);
-	Shooter shooter = new Shooter(shootmotor1, shootmotor2, driveStick);
+	Shooter shooter = new Shooter(shootmotorLeft, shootmotorRight, driveStick);
 
+	// This code is run when the robot is initialized
 	public void robotInit() {
+		System.out.println("Robot more initialized!");
+		
 		cmdlist.add(aDrive);
 		cmdlist.add(shooter);
+		
+		// Enable or disable the limit switches
 		frontleftmotor.enableLimitSwitch(false, false);
 		frontrightmotor.enableLimitSwitch(false, false);
 		backleftmotor.enableLimitSwitch(false, false);
 		backrightmotor.enableLimitSwitch(false, false);
-		shootmotor1.enableLimitSwitch(false, false);
-		shootmotor2.enableLimitSwitch(false, false);
+		shootmotorLeft.enableLimitSwitch(false, false);
+		shootmotorRight.enableLimitSwitch(false, false);
 
+		// Set the ramp to the above number
 		frontleftmotor.setVoltageRampRate(driveramp);
 		frontrightmotor.setVoltageRampRate(driveramp);
 		backleftmotor.setVoltageRampRate(driveramp);
@@ -69,43 +70,38 @@ public class Robot extends IterativeRobot {
 
 	}
 
+	// This code is ran when autonomous is initialized
 	public void autonomousInit() {
+		System.out.println("Autonomous initialized!");
 		for (int i = 0; i < cmdlist.size(); i++) {
 			cmdlist.get(i).autonomousInit();
 		}
-
 	}
 
-	/**
-	 * This function is called periodically during autonomous
-	 */
+	// This code is ran periodically during autonomous (About every 50 ms)
 	public void autonomousPeriodic() {
 		for (int i = 0; i < cmdlist.size(); i++) {
 			cmdlist.get(i).autonomousPeriodic();
 		}
-
 	}
-
-	/**
-	 * This function is called periodically during operator control
-	 */
+	
+	// Ran periodically during teleop (normal) operation (about every 50 ms)
 	public void teleopPeriodic() {
 		for (int i = 0; i < cmdlist.size(); i++) {
 			cmdlist.get(i).teleopPeriodic();
 		}
 	}
 
-	public void testInit()
-
-	{
+	// Ran when test mode is initialized
+	public void testInit() {
+		System.out.println("Test mode initialized!");
 		t1.start();
+		t3.start();
 	}
 
-	/**
-	 * This function is called periodically during test mode
-	 * 
-	 */
+	// Ran periodically during test mode (about every 50 ms)
 	public void testPeriodic() {
+		this.cCheck();
 //		drive.arcadeDrive(0 - driveStick.sgetY(), 0 - driveStick.sgetTwist());
 
 		// Show that the buttons work - uses servo - intended for use with the
@@ -130,21 +126,53 @@ public class Robot extends IterativeRobot {
 			SmartDashboard.putString("DB/String 8", "right S " + frontrightmotor.getSpeed());
 		}
 		
-		if(driveStick.getRawButton(14)){
+		// If button 14 is pressed, start the timer and start the motors at one tenth i.
+		if(driveStick.getRawButton(14)) {
 			t2.start();
-			tm.setMotors(i * .1); // sets the four motors to one tenth of the value of i (.1 for 1, .2 for 2, 1 for 10)
+			this.setMotors(i * .1); // sets the four motors to one tenth of the value of i (.1 for 1, .2 for 2, 1 for 10)
 		}
 
-		if(t2.hasPeriodPassed(5)){
+		// If 5 seconds have passed, turn off the motors, increment i, and reset the timer.
+		if(t2.hasPeriodPassed(5)) {
 			t2.stop();
 			t2.reset();
-			tm.setMotors(0);
+			this.setMotors(0);
 			if(i < 70){
 				i++;
 			}
 	
 		}
 	
+	}
+
+	// This method helps simplify setting all the motors to one value.
+	public void setMotors(double vValue) {
+	    frontrightmotor.set(vValue);
+		frontleftmotor.set(vValue);
+		backrightmotor.set(vValue);
+		backleftmotor.set(vValue);
+	}
+
+	// Checks the current for the shooter motors and 
+	public void cCheck() {
+		if(t3.hasPeriodPassed(.25)) {
+			t3.reset();
+			t3.start();
+			smv2 = smv1;
+			smv1 = shootmotorLeft.getOutputCurrent();
+			if(smv1 > smv2 + .25) {
+				SmartDashboard.putString("DB/String9", "Preparing to shoot...");
+			} else if(smv1 < smv2 - .25) {
+				SmartDashboard.putString("DB/String9", "Nearly Ready...");
+			} else if (smv1 >= smv2 - .25 || smv1 <= smv2 + .25) {
+				SmartDashboard.putBoolean("DB/LED0", true);
+				SmartDashboard.putString("DB/String9", "Ready to shoot!");
+			}
+		}
+	}
+
+	public void disabledPeriodic() {
+		//TODO Find all the things that need to be turned off
 	}
 
 }
