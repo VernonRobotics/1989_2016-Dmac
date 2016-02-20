@@ -120,12 +120,8 @@ public class Robot extends IterativeRobot {
 			elevator.set(0);
 		}				
 		
-		/*  adrive.arcadeDrive(0 - driveStick.sgetY(), 0 - driveStick.sgetTwist());
-		*
-		*
-		*
-		*/
-		
+	 // aDrive.arcadeDriveC(0 - driveStick.sgetY(), 0 - driveStick.sgetTwist());
+	
 		// Show that the buttons work - uses servo - intended for use with the
 		// dog leg
 		if (driveStick.getRawButton(5) == true) {

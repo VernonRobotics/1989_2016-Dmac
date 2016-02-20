@@ -16,10 +16,10 @@ public class ArcadeDriveCmd implements cmd {
 	RobotDrive rd;
 
 	/*
-	 * Main controller for use.  Based on 4 motors anda  speed controller.
+	 * Main controller for use.  Based on 4 motors and a  speed controller.
 	 */
-	public ArcadeDriveCmd(int leftMotorChannel, int rightMotorChannel, JsScaled driveStick) {
-		rd = new RobotDrive(leftMotorChannel, rightMotorChannel);
+	public ArcadeDriveCmd(int frontLeftMotor, int rearLeftMotor, int frontRightMotor, int rearRightMotor, JsScaled driveStick) {
+		rd = new RobotDrive(frontLeftMotor, rearLeftMotor, frontRightMotor, rearRightMotor);
 		this.driveStick = driveStick;
 	}
 		
@@ -28,16 +28,21 @@ public class ArcadeDriveCmd implements cmd {
 		rd = new RobotDrive(leftMotor, rightMotor);
 		this.driveStick = driveStick;
 	}
-	public ArcadeDriveCmd(int frontLeftMotor, int rearLeftMotor, int frontRightMotor, int rearRightMotor, JsScaled driveStick) {
-		rd = new RobotDrive(frontLeftMotor, rearLeftMotor, frontRightMotor, rearRightMotor);
-		this.driveStick = driveStick;
-	}
+//	public ArcadeDriveCmd(int frontLeftMotor, int rearLeftMotor, int frontRightMotor, int rearRightMotor, JsScaled driveStick) {
+//		rd = new RobotDrive(frontLeftMotor, rearLeftMotor, frontRightMotor, rearRightMotor);
+//		this.driveStick = driveStick;
+//	}
 	
+
 	public ArcadeDriveCmd(SpeedController frontLeftMotor, SpeedController rearLeftMotor, SpeedController frontRightMotor, SpeedController rearRightMotor, JsScaled driveStick) {
 		rd = new RobotDrive(frontLeftMotor, rearLeftMotor, frontRightMotor, rearRightMotor);
 		this.driveStick = driveStick;
 	}
 
+	public ArcadeDriveCmd(int leftMotorChannel, int rightMotorChannel, JsScaled driveStick) {
+	 		rd = new RobotDrive(leftMotorChannel, rightMotorChannel);
+	  		this.driveStick = driveStick;
+	  	}
 	
 	@Override
 	public void disabledInit() {
