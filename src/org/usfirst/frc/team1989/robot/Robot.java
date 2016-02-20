@@ -19,12 +19,12 @@ public class Robot extends IterativeRobot {
 	double driveramp = 6.0;
 
 	// These are the motor objects and the timer
-	CANTalon frontleftmotor = new CANTalon(3);
-	CANTalon frontrightmotor = new CANTalon(9);
-	CANTalon backleftmotor = new CANTalon(6);
-	CANTalon backrightmotor = new CANTalon(7);
-	CANTalon shootmotorLeft = new CANTalon(4);
-	CANTalon shootmotorRight = new CANTalon(8);
+	CANTalon frontLeftMotor = new CANTalon(3);
+	CANTalon frontRightMotor = new CANTalon(9);
+	CANTalon rearLeftMotor = new CANTalon(6);
+	CANTalon rearRightMotor = new CANTalon(7);
+	CANTalon shootMotorLeft = new CANTalon(4);
+	CANTalon shootMotorRight = new CANTalon(8);
 	CANTalon elevator = new CANTalon(5);
 	Timer t1 = new Timer();
 	Servo s1 = new Servo(0);
@@ -40,11 +40,11 @@ public class Robot extends IterativeRobot {
 	
     // JsScaled utilityStick = new JsScaled(1);  // Second Joystick?
 	JsScaled driveStick = new JsScaled(0);
-	ArcadeDriveCmd aDrive = new ArcadeDriveCmd(frontleftmotor, backleftmotor, frontrightmotor, backrightmotor, driveStick);
+	ArcadeDriveCmd aDrive = new ArcadeDriveCmd(frontLeftMotor, rearLeftMotor, frontRightMotor, rearRightMotor, driveStick);
 	ArrayList<cmd> cmdlist = new ArrayList<cmd>();
 	Joystick js = new Joystick(0);
 
-	Shooter shooter = new Shooter(shootmotorLeft, shootmotorRight, driveStick);
+	Shooter shooter = new Shooter(shootMotorLeft, shootMotorRight, driveStick);
 
 	
 	// This code is run when the robot is initialized
@@ -55,18 +55,18 @@ public class Robot extends IterativeRobot {
 		cmdlist.add(shooter);
 		
 		// Enable or disable the limit switches
-		frontleftmotor.enableLimitSwitch(false, false);
-		frontrightmotor.enableLimitSwitch(false, false);
-		backleftmotor.enableLimitSwitch(false, false);
-		backrightmotor.enableLimitSwitch(false, false);
-		shootmotorLeft.enableLimitSwitch(false, false);
-		shootmotorRight.enableLimitSwitch(false, false);
+		frontLeftMotor.enableLimitSwitch(false, false);
+		frontRightMotor.enableLimitSwitch(false, false);
+		rearLeftMotor.enableLimitSwitch(false, false);
+		rearRightMotor.enableLimitSwitch(false, false);
+		shootMotorLeft.enableLimitSwitch(false, false);
+		shootMotorRight.enableLimitSwitch(false, false);
 
 		// Set the ramp to the above number
-		frontleftmotor.setVoltageRampRate(driveramp);
-		frontrightmotor.setVoltageRampRate(driveramp);
-		backleftmotor.setVoltageRampRate(driveramp);
-		backrightmotor.setVoltageRampRate(driveramp);
+		frontLeftMotor.setVoltageRampRate(driveramp);
+		frontRightMotor.setVoltageRampRate(driveramp);
+		rearLeftMotor.setVoltageRampRate(driveramp);
+		rearRightMotor.setVoltageRampRate(driveramp);
 
 	}
 
@@ -138,14 +138,14 @@ public class Robot extends IterativeRobot {
 		if (t1.get() > .5) {
 			t1.reset();
 			t1.start();
-			SmartDashboard.putString("DB/String 0", " Left I " + frontleftmotor.getOutputCurrent());
-			SmartDashboard.putString("DB/String 5", "right I " + frontrightmotor.getOutputCurrent());
-			SmartDashboard.putString("DB/String 1", " Left O " + frontleftmotor.getOutputVoltage());
-			SmartDashboard.putString("DB/String 6", "right O " + frontrightmotor.getOutputVoltage());
-			SmartDashboard.putString("DB/String 2", " Left V " + frontleftmotor.getBusVoltage());
-			SmartDashboard.putString("DB/String 7", "right V " + frontrightmotor.getBusVoltage());
-			SmartDashboard.putString("DB/String 3", " Left S " + frontleftmotor.getSpeed());
-			SmartDashboard.putString("DB/String 8", "right S " + frontrightmotor.getSpeed());
+			SmartDashboard.putString("DB/String 0", " Left I " + frontLeftMotor.getOutputCurrent());
+			SmartDashboard.putString("DB/String 5", "right I " + frontRightMotor.getOutputCurrent());
+			SmartDashboard.putString("DB/String 1", " Left O " + frontLeftMotor.getOutputVoltage());
+			SmartDashboard.putString("DB/String 6", "right O " + frontRightMotor.getOutputVoltage());
+			SmartDashboard.putString("DB/String 2", " Left V " + frontLeftMotor.getBusVoltage());
+			SmartDashboard.putString("DB/String 7", "right V " + frontRightMotor.getBusVoltage());
+			SmartDashboard.putString("DB/String 3", " Left S " + frontLeftMotor.getSpeed());
+			SmartDashboard.putString("DB/String 8", "right S " + frontRightMotor.getSpeed());
 		}
 		
 		// If button 14 is pressed, start the timer and start the motors at one tenth i.
@@ -166,10 +166,10 @@ public class Robot extends IterativeRobot {
 	
 	// This method helps simplify setting all the motors to one value.
 	public void setMotors(double vValue) {
-	    frontrightmotor.set(vValue);
-		frontleftmotor.set(vValue);
-		backrightmotor.set(vValue);
-		backleftmotor.set(vValue);
+	    frontRightMotor.set(vValue);
+		frontLeftMotor.set(vValue);
+		rearRightMotor.set(vValue);
+		rearLeftMotor.set(vValue);
 	}
 
 	// Checks the current for the shooter motors and 
@@ -178,7 +178,7 @@ public class Robot extends IterativeRobot {
 			t3.reset();
 			t3.start();
 			smv2 = smv1;
-			smv1 = shootmotorLeft.getOutputCurrent();
+			smv1 = shootMotorLeft.getOutputCurrent();
 			if(smv1 > smv2 + .25) {
 				SmartDashboard.putString("DB/String9", "Preparing to shoot...");
 			} else if(smv1 < smv2 - .25) {
