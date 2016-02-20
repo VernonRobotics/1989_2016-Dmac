@@ -80,6 +80,7 @@ public class Robot extends IterativeRobot {
 
 	// This code is ran periodically during autonomous (About every 50 ms)
 	public void autonomousPeriodic() {
+		
 		for (int i = 0; i < cmdlist.size(); i++) {
 			cmdlist.get(i).autonomousPeriodic();
 		}
@@ -102,6 +103,20 @@ public class Robot extends IterativeRobot {
 	// Ran periodically during test mode (about every 50 ms)
 	public void testPeriodic() {
 		this.cCheck();
+
+		
+		if(driveStick.getRawButton(3) == true){
+			elevator.set(.2);
+		}
+		else if (driveStick.getRawButton(4)){
+			elevator.set(-.2);
+		}
+		else
+		{
+			elevator.set(0);
+		}		
+		
+		
 //		drive.arcadeDrive(0 - driveStick.sgetY(), 0 - driveStick.sgetTwist());
 
 		// Show that the buttons work - uses servo - intended for use with the
@@ -172,7 +187,9 @@ public class Robot extends IterativeRobot {
 	}
 
 	public void disabledPeriodic() {
-		//TODO Find all the things that need to be turned off
+		elevator.set(0);
+		this.setMotors(0);
+		s1.set(0);
 	}
 
 }
