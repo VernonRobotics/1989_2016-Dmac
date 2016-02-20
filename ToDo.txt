@@ -1,0 +1,1 @@
+1. Solenoid to automatically retract after going forwards

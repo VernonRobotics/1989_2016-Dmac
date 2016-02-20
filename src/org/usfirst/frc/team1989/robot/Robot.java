@@ -40,13 +40,13 @@ public class Robot extends IterativeRobot {
 	
     // JsScaled utilityStick = new JsScaled(1);  // Second Joystick?
 	JsScaled driveStick = new JsScaled(0);
-	ArcadeDriveCmd aDrive = new ArcadeDriveCmd(frontleftmotor, frontrightmotor, driveStick);
+	ArcadeDriveCmd aDrive = new ArcadeDriveCmd(frontleftmotor, backleftmotor, frontrightmotor, backrightmotor, driveStick);
 	ArrayList<cmd> cmdlist = new ArrayList<cmd>();
 	Joystick js = new Joystick(0);
 
-	RobotDrive drive = new RobotDrive(frontleftmotor, frontrightmotor);
 	Shooter shooter = new Shooter(shootmotorLeft, shootmotorRight, driveStick);
 
+	
 	// This code is run when the robot is initialized
 	public void robotInit() {
 		System.out.println("Robot more initialized!");
@@ -86,6 +86,8 @@ public class Robot extends IterativeRobot {
 		}
 	}
 	
+	
+	
 	// Ran periodically during teleop (normal) operation (about every 50 ms)
 	public void teleopPeriodic() {
 		for (int i = 0; i < cmdlist.size(); i++) {
@@ -93,6 +95,9 @@ public class Robot extends IterativeRobot {
 		}
 	}
 
+	
+	
+	
 	// Ran when test mode is initialized
 	public void testInit() {
 		System.out.println("Test mode initialized!");
@@ -100,25 +105,27 @@ public class Robot extends IterativeRobot {
 		t3.start();
 	}
 
+	
+	
 	// Ran periodically during test mode (about every 50 ms)
 	public void testPeriodic() {
 		this.cCheck();
-
 		
+		// Elevator code                              
 		if(driveStick.getRawButton(3) == true){
 			elevator.set(.2);
-		}
-		else if (driveStick.getRawButton(4)){
+		} else if (driveStick.getRawButton(4)) {
 			elevator.set(-.2);
-		}
-		else
-		{
+		} else {
 			elevator.set(0);
-		}		
+		}				
 		
+		/*  adrive.arcadeDrive(0 - driveStick.sgetY(), 0 - driveStick.sgetTwist());
+		*
+		*
+		*
+		*/
 		
-//		drive.arcadeDrive(0 - driveStick.sgetY(), 0 - driveStick.sgetTwist());
-
 		// Show that the buttons work - uses servo - intended for use with the
 		// dog leg
 		if (driveStick.getRawButton(5) == true) {
@@ -152,14 +159,11 @@ public class Robot extends IterativeRobot {
 			t2.stop();
 			t2.reset();
 			this.setMotors(0);
-			if(i < 70){
-				i++;
-			}
-	
-		}
-	
-	}
+			int i = 0;
+			if(i < 70) {  i++; }}
 
+	}
+	
 	// This method helps simplify setting all the motors to one value.
 	public void setMotors(double vValue) {
 	    frontrightmotor.set(vValue);
